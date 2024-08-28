@@ -159,13 +159,7 @@
         const $colorPicker = $('#color-picker');
         // CONTEXT DEL CANVAS
         const ctx = canvas.getContext('2d');
-        // clear el lienzo
-        const $clearBtn = $('#clear-btn');
-        // dibujar el rectangulo y el draw para cambiar botones
-        const $drawBtn = $('#draw-btn');
-        const $rectangleBtn = $('#rectangle-btn');
         
-
         // ESTADO DEL CANVAS 
         let isDrawing = false;
         // Donde empieza el dibujo
@@ -190,19 +184,6 @@
         
         // Evento para selleccionar el color
         $colorPicker.addEventListener('change', handleChangeColor);
-        // Evento para limpiar el canvas
-        $clearBtn.addEventListener('click', clearCanvas);
-        // Evento para cambiar el modo de dibujo
-        $rectangleBtn.addEventListener('click', () => {
-            mode = MODES.RECTANGLE;
-            $rectangleBtn.classList.add('active');
-            $drawBtn.classList.remove('active');
-        });
-        $drawBtn.addEventListener('click', () => {
-            mode = MODES.DRAW;
-            $drawBtn.classList.add('active');
-            $rectangleBtn.classList.remove('active');
-        });
 
         //Definiendo Metodos para dibujar
         function startDrawing(event) {
@@ -269,34 +250,7 @@
                 const {value} = $colorPicker;
                 ctx.strokeStyle = value;
             }
-        // limpiar el lienzo
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-        // Cambiar el modo de dibujo 
-        function setMode(newMode) {
-            mode = newMode;
-        }
-        // recuperamos el  elemento de la clase active o boton 
-        // y en el caso que exista, eliminamos la clase active
-            $('button.active').classList.remove('active');
-        // ahora agregamos la clase active al boton que se esta presionando
-         if( mode === MODES.DRAW ){
-            $drawBtn.classList.add('active')
-            canvas.style.cursor = 'crosshair'
-            ctx.lineWidth = 2
-         } else if (mode === MODES.ERASER) {
-            ctx.lineWidth = 2
-            $eraseBtn.classList.add('active')
-         } else if (mode === MODES.RECTANGLE) {
-            $rectangleBtn.classList.add('active')
-         } else if (mode === MODES.ELLIPSE) {
-            $ellipseBtn.classList.add('active')
-         } else if (mode === MODES.PICKER) {
-            $pickerBtn.classList.add('active')
-         }
-         // INIT 
-         setMode(MODES.DRAW)
+
     </script>
 </head>
 <body>
