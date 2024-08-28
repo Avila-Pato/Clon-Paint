@@ -161,6 +161,10 @@
         const ctx = canvas.getContext('2d');
         // clear el lienzo
         const $clearBtn = $('#clear-btn');
+        // dibujar el rectangulo y el draw para cambiar botones
+        const $drawBtn = $('#draw-btn');
+        const $rectangleBtn = $('#rectangle-btn');
+        
 
         // ESTADO DEL CANVAS 
         let isDrawing = false;
@@ -171,6 +175,8 @@
         let lastY = 0
         let mode = MODES.DRAW; // Modo actual del lienzo (puede ser 'draw', 'eraser', 'rectangle',
         // 'ellipse' o 'picker') esta lo toma de la constante MODES
+        // Dibujar el rectangulo
+        let isDrawingRectangle = null;
 
         // Eventos para saber cuando se esta dibujando
         canvas.addEventListener('mousedown', startDrawing);
@@ -186,6 +192,17 @@
         $colorPicker.addEventListener('change', handleChangeColor);
         // Evento para limpiar el canvas
         $clearBtn.addEventListener('click', clearCanvas);
+        // Evento para cambiar el modo de dibujo
+        $rectangleBtn.addEventListener('click', () => {
+            mode = MODES.RECTANGLE;
+            $rectangleBtn.classList.add('active');
+            $drawBtn.classList.remove('active');
+        });
+        $drawBtn.addEventListener('click', () => {
+            mode = MODES.DRAW;
+            $drawBtn.classList.add('active');
+            $rectangleBtn.classList.remove('active');
+        });
 
         //Definiendo Metodos para dibujar
         function startDrawing(event) {
@@ -194,14 +211,23 @@
             // guardar las coordenadas iniciales
             [startX, startY] = [offsetX, offsetY];
             [lastX, lastY] = [offsetX, offsetY];
+
+
+            // photo del canvas
+            isDrawingRectangle = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
         }
         function draw(event) {
             // si no se esta dibujando osea si no se apreta el click, no hacer nada
            if(!isDrawing) return;
 
+           
            // recuperar las coordenadas actuales
            const { offsetX, offsetY } = event;
 
+           // cambiar el tipo de lienzo 
+
+           if(mode === MODES.DRAW){
            //comenzar trazado
            ctx.beginPath();
            // mover hasta la ultima pocicion conocida
@@ -211,13 +237,29 @@
            // dibujar la linea
            ctx.stroke();
 
-           // anchura de la linea
-           ctx.lineWidth = 1;
-
-
            // actualzar las ultimas coordenadas 
            [lastX, lastY] = [offsetX, offsetY];
+
+           return
         }
+        // Dibujar un rectangulo
+        if(mode === MODES.RECTANGLE){
+            // poner imagen que tenemos guardada evitando que se repita o se conserve a cada rato
+            ctx.putImageData(isDrawingRectangle, 0, 0);
+            // dibujar un rectangulo desde el putno inicial hasta el final
+          const width = offsetX - startX;
+          const height = offsetY - startY;
+
+          //comenzar trazado 
+          ctx.beginPath();
+          // dibujar un rectangulo desde el punto inicial hasta el final
+          ctx.rect(startX, startY, width, height);
+          // dibujar el rectangulo
+          ctx.stroke();
+          return
+        }
+    }
+
         function stopDrawing() {
             isDrawing = false;
         }
@@ -231,7 +273,28 @@
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
-
+        // Cambiar el modo de dibujo 
+        function setMode(newMode) {
+            mode = newMode;
+        }
+        // recuperamos el  elemento de la clase active o boton 
+        // y en el caso que exista, eliminamos la clase active
+            $('button.active').classList.remove('active');
+        // ahora agregamos la clase active al boton que se esta presionando
+         if( mode === MODES.DRAW ){
+            $drawBtn.classList.add('active')
+            canvas.style.cursor = 'crosshair'
+            ctx.lineWidth = 2
+         } else if (mode === MODES.ERASER) {
+            ctx.lineWidth = 2
+            $eraseBtn.classList.add('active')
+         } else if (mode === MODES.RECTANGLE) {
+            $rectangleBtn.classList.add('active')
+         } else if (mode === MODES.ELLIPSE) {
+            $ellipseBtn.classList.add('active')
+         } else if (mode === MODES.PICKER) {
+            $pickerBtn.classList.add('active')
+         }
     </script>
 </head>
 <body>
