@@ -72,11 +72,15 @@
         const $ = selector => document.querySelector(selector);
         // Función $$ para seleccionar todos los elementos que coincidan con el selector
         const $$ = selector => document.querySelectorAll(selector);
+       
 
         //eLEMENTO DEL CANVAS
         const canvas = $('#canvas');
+        // RECUPERAR EL INPUT DEL COLOR
+        const $colorPicker = $('#color-picker');
         // CONTEXT DEL CANVAS
         const ctx = canvas.getContext('2d');
+        
         // ESTADO DEL CANVAS 
         let isDrawing = false;
         // Donde empieza el dibujo
@@ -95,6 +99,10 @@
         canvas.addEventListener('mouseup', stopDrawing);
         // Eventos cuando salimos del canvas
         canvas.addEventListener('mouseleave', stopDrawing);
+        
+        
+        // Evento para selleccionar el color
+        $colorPicker.addEventListener('change', handleChangeColor);
 
         //Definiendo Metodos para dibujar
         function startDrawing(event) {
@@ -119,12 +127,23 @@
            ctx.lineTo(offsetX, offsetY);
            // dibujar la linea
            ctx.stroke();
+
+           // anchura de la linea
+           ctx.lineWidth = 1;
+
+
            // actualzar las ultimas coordenadas 
            [lastX, lastY] = [offsetX, offsetY];
         }
         function stopDrawing() {
             isDrawing = false;
         }
+
+        // Cambiar el color del lienzo
+            function handleChangeColor() {
+                const {value} = $colorPicker;
+                ctx.strokeStyle = value;
+            }
 
     </script>
 </head>
