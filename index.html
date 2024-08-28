@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clon-Paint</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #212121;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: rgb(10, 141, 255);
+            font-size: 20px;
+            font-weight: 600;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+        img {
+            width: 16px;
+            height: auto;
+        }
+        canvas {
+            background-color: antiquewhite;
+            max-width: 500px;
+        }
+        header {
+            background: silver; /* Este color de fondo se aplicará al header */
+            padding: 2px;
+        }
+        button {
+            border: 0;
+            background: transparent;
+        }
+        button:hover {
+            box-shadow: 
+                1px 1px black,
+                inset -1px -1px gray,
+                inset 1px 1px white;
+        }
+        main {
+            padding: 16px;
+        }
+        footer {
+            background: silver;
+            padding: 2px;
+        }
+        #container {
+            border: 1px solid #808080;
+        }
+    </style>
+    <script type="module">
+        // se haran las contantes para poder utilizarlas en el codigo es como una especie 
+        // de diccionario
+        const MODES = {
+            DRAW: 'draw',
+            ERASER: 'eraser',
+            RECTANGLE: 'rectangle',
+            ELLIPSE: 'ellipse',
+            PICKER: 'picker',
+        }
+        // Función $ para seleccionar el primer elemento que coincida con el selector
+        const $ = selector => document.querySelector(selector);
+        // Función $$ para seleccionar todos los elementos que coincidan con el selector
+        const $$ = selector => document.querySelectorAll(selector);
+
+        //eLEMENTO DEL CANVAS
+        const canvas = $('#canvas');
+        // CONTEXT DEL CANVAS
+        const ctx = canvas.getContext('2d');
+        // ESTADO DEL CANVAS 
+        let isDrawing = false;
+        // Donde empieza el dibujo
+        let startX, startY
+        // COORDENADAS DEL CANVAS
+        let lastX = 0
+        let lastY = 0
+        let mode = MODES.DRAW; // Modo actual del lienzo (puede ser 'draw', 'eraser', 'rectangle',
+        // 'ellipse' o 'picker') esta lo toma de la constante MODES
+
+        // Eventos para saber cuando se esta dibujando
+        canvas.addEventListener('mousedown', startDrawing);
+        // Eventos para saber cuando se esta moviendo el mouse
+        canvas.addEventListener('mousemove', draw);
+        // Eventos para saber cuando se deja de dibujar
+        canvas.addEventListener('mouseup', stopDrawing);
+        // Eventos cuando salimos del canvas
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        //Definiendo Metodos para dibujar
+        function startDrawing(event) {
+           isDrawing = true;
+           const { offsetX, offsetY } = event;
+            // guardar las coordenadas iniciales
+            [startX, startY] = [offsetX, offsetY];
+            [lastX, lastY] = [offsetX, offsetY];
+        }
+        function draw(event) {
+            // si no se esta dibujando osea si no se apreta el click, no hacer nada
+           if(!isDrawing) return;
+
+           // recuperar las coordenadas actuales
+           const { offsetX, offsetY } = event;
+
+           //comenzar trazado
+           ctx.beginPath();
+           // mover hasta la ultima pocicion conocida
+           ctx.moveTo(lastX, lastY);
+           // dibujar una linea hasta la posicion actual con als coordenadas actuales
+           ctx.lineTo(offsetX, offsetY);
+           // dibujar la linea
+           ctx.stroke();
+           // actualzar las ultimas coordenadas 
+           [lastX, lastY] = [offsetX, offsetY];
+        }
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+    </script>
+</head>
+<body>
+    <h1> 
+        <img src="icons/icon.png" alt="">
+        Paint.js
+    </h1>
+    <div id="container">
+
+        <header>
+            <button>Fields</button>
+            <button>Edit</button>
+            <button>View</button> 
+            <button>Image</button>  
+            <button>Options</button>  
+            <button>Help</button>   
+        </header>
+        
+        <main>
+            <canvas id="canvas" width="315" height="200"></canvas>
+        </main>
+        
+        <footer>
+            <input type="color" id="color-picker" value="#000000">
+        </footer>
+    </div>
+
+</body>
+</html>
