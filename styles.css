@@ -1,0 +1,128 @@
+/* General box-sizing for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho y alto de los elementos */
+}
+
+/* Body styles */
+body {
+  font-family: 'Arial', sans-serif; /* Fuente predeterminada para el texto */
+  background: #222; /* Color de fondo del cuerpo de la página */
+  padding: 16px; /* Espaciado interno del cuerpo */
+  max-width: 500px; /* Ancho máximo del cuerpo */
+  margin: 0 auto; /* Centra el cuerpo horizontalmente */
+}
+
+/* Header styles */
+h1 {
+  color: #fce300; /* Color del texto del encabezado */
+  font-size: 12px; /* Tamaño de la fuente del encabezado */
+  font-weight: 600; /* Peso de la fuente del encabezado */
+  display: flex; /* Usa Flexbox para el diseño */
+  justify-content: center; /* Centra horizontalmente los elementos hijos */
+  align-items: center; /* Centra verticalmente los elementos hijos */
+  gap: 4px; /* Espacio entre los elementos del encabezado */
+}
+
+h1 img {
+  width: 16px; /* Ancho de las imágenes en el encabezado */
+  height: auto; /* Mantiene la relación de aspecto de las imágenes */
+}
+
+/* Canvas styles */
+canvas {
+  background: #fff; /* Color de fondo del lienzo */
+}
+
+/* Header, main, and footer grid layout */
+header,
+main,
+footer {
+  padding: 2px; /* Espaciado interno de los elementos de la cuadrícula */
+}
+
+header {
+  grid-area: header; /* Área asignada en la cuadrícula */
+  background: silver; /* Color de fondo del encabezado */
+}
+
+main {
+  grid-area: main; /* Área asignada en la cuadrícula */
+  padding: 16px; /* Espaciado interno del área principal */
+}
+
+footer {
+  grid-area: footer; /* Área asignada en la cuadrícula */
+  background: silver; /* Color de fondo del pie de página */
+  padding: 4px; /* Espaciado interno del pie de página */
+}
+
+/* Container grid layout */
+#container {
+  border: 1px solid #808080; /* Borde del contenedor */
+  display: grid; /* Usa el diseño de cuadrícula */
+  grid-template-areas:
+    "header header header" /* Define las áreas de la cuadrícula para el encabezado */
+    "aside main main" /* Define las áreas de la cuadrícula para el área lateral y principal */
+    "footer footer footer"; /* Define las áreas de la cuadrícula para el pie de página */
+}
+
+/* Aside styles */
+aside {
+  background: silver; /* Color de fondo del área lateral */
+  grid-area: aside; /* Área asignada en la cuadrícula */
+  width: 52px; /* Ancho del área lateral */
+  padding-top: 2px; /* Espaciado interno superior del área lateral */
+}
+
+aside nav {
+  display: flex; /* Usa Flexbox para el diseño del menú de navegación */
+  flex-wrap: wrap; /* Permite que los elementos se ajusten a múltiples líneas */
+  gap: 1px; /* Espacio entre los botones de navegación */
+  justify-content: center; /* Centra los botones de navegación horizontalmente */
+}
+
+aside button {
+  width: 24px; /* Ancho de los botones en el área lateral */
+  height: 24px; /* Alto de los botones en el área lateral */
+  background: #bdbdbd url('./icons/draw.png') no-repeat center; /* Color de fondo y imagen del botón */
+  border: 1.5px solid #eee; /* Borde del botón */
+  border-right-color: #000; /* Color del borde derecho del botón */
+  border-bottom-color: #000; /* Color del borde inferior del botón */
+  image-rendering: pixelated; /* Asegura que las imágenes se rendericen de forma pixelada */
+}
+
+aside button.active {
+  background-color: #eee; /* Color de fondo del botón activo */
+  border-color: #000; /* Color del borde del botón activo */
+  border-right-color: #eee; /* Color del borde derecho del botón activo */
+  border-bottom-color: #eee; /* Color del borde inferior del botón activo */
+}
+
+aside button[disabled] {
+  pointer-events: none; /* Desactiva los eventos del puntero para los botones desactivados */
+  opacity: .5; /* Opacidad reducida para los botones desactivados */
+}
+
+/* Button specific styles */
+#erase-btn {
+    background-image: url('/icons/erase.png'); /* Ruta absoluta */
+  }
+
+#rectangle-btn {
+  background-image: url('./icons/rectangle.png'); /* Imagen del botón de rectángulo */
+}
+
+#ellipse-btn {
+  background-image: url('./icons/ellipse.png'); /* Imagen del botón de elipse */
+}
+
+#picker-btn {
+  background-image: url('./icons/picker.png'); /* Imagen del botón de selector de color */
+}
+
+#clear-btn {
+  background-image: url('./icons/trash.png'); /* Imagen del botón de borrar todo */
+  background-size: 18px; /* Tamaño de la imagen de fondo del botón de borrar todo */
+}
